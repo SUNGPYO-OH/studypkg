@@ -209,7 +209,10 @@ include_directories(
 
 # ALLOW :
 add_executable(hellonode src/hello_node.cpp)
-target_link_libraries(hellonode ${catkin_LIBRARIES} ${OpenCV_LIBS})
+target_link_libraries(hellonode ${catkin_LIBRARIES})
 
 add_executable(rostutorials_pub src/ros_tutorials_pub.cpp)
-target_link_libraries(rostutorials_pub ${catkin_LIBRARIES} ${OpenCV_LIBS})
+target_link_libraries(rostutorials_pub ${catkin_LIBRARIES})
+
+add_executable(rostutorials_sub src/ros_tutorials_sub.cpp)
+target_link_libraries(rostutorials_sub ${catkin_LIBRARIES})
