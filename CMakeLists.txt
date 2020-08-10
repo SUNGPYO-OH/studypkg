@@ -12,10 +12,12 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   message_generation
+  actionlib_msgs
+  actionlib
 )
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+ find_package(Boost REQUIRED COMPONENTS system)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -62,15 +64,15 @@ find_package(catkin REQUIRED COMPONENTS
  )
 
 ## Generate actions in the 'action' folder
-# add_action_files(
-#   FILES
-#   Action1.action
-#   Action2.action
-# )
+ add_action_files(
+   FILES
+   Fibonacci.action
+ )
 
 ## Generate added messages and services with any dependencies listed here
  generate_messages(
    DEPENDENCIES
+   actionlib_msgs
    std_msgs
  )
 
@@ -106,7 +108,8 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
   LIBRARIES studypkg
-  CATKIN_DEPENDS roscpp std_msgs
+  CATKIN_DEPENDS roscpp std_msgs actionlib actionlib_msgs
+  DEPENDS Boost
 #  CATKIN_DEPENDS message_runtime
 #  DEPENDS system_lib
 )
@@ -119,7 +122,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
 # include
-  ${catkin_INCLUDE_DIRS}
+  ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -220,9 +223,17 @@ target_link_libraries(rostutorials_sub ${catkin_LIBRARIES})
 # service_server
 add_executable(rostutorials_server src/ros_tutorials_server.cpp)
 target_link_libraries(rostutorials_server ${catkin_LIBRARIES})
-add_dependencies(rostutorials_server studypkg)
+add_dependencies(rostutorials_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 # service_client
 add_executable(rostutorials_client src/ros_tutorials_client.cpp)
 target_link_libraries(rostutorials_client ${catkin_LIBRARIES})
-add_dependencies(rostutorials_client studypkg)
+add_dependencies(rostutorials_client ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+add_executable(rostutorials_action_server src/ros_tutorials_action_server.cpp)
+target_link_libraries(rostutorials_action_server ${catkin_LIBRARIES})
+add_dependencies(rostutorials_action_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+add_executable(rostutorials_action_client src/ros_tutorials_action_client.cpp)
+target_link_libraries(rostutorials_action_client ${catkin_LIBRARIES})
+add_dependencies(rostutorials_action_client ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
