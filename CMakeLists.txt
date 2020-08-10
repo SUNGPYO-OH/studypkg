@@ -9,6 +9,7 @@ project(studypkg)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  rospy
   std_msgs
   message_generation
 )
@@ -49,17 +50,16 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
-   tutorial.msg
+   tutorial_msg.msg
    #Message1.msg
    #Message2.msg
  )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+ add_service_files(
+   FILES
+   tutorial_srv.srv
+ )
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -105,8 +105,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES studypkg
-#  CATKIN_DEPENDS roscpp std_msgs
+  LIBRARIES studypkg
+  CATKIN_DEPENDS roscpp std_msgs
 #  CATKIN_DEPENDS message_runtime
 #  DEPENDS system_lib
 )
@@ -216,3 +216,13 @@ target_link_libraries(rostutorials_pub ${catkin_LIBRARIES})
 
 add_executable(rostutorials_sub src/ros_tutorials_sub.cpp)
 target_link_libraries(rostutorials_sub ${catkin_LIBRARIES})
+
+# service_server
+add_executable(rostutorials_server src/ros_tutorials_server.cpp)
+target_link_libraries(rostutorials_server ${catkin_LIBRARIES})
+add_dependencies(rostutorials_server studypkg)
+
+# service_client
+add_executable(rostutorials_client src/ros_tutorials_client.cpp)
+target_link_libraries(rostutorials_client ${catkin_LIBRARIES})
+add_dependencies(rostutorials_client studypkg)
